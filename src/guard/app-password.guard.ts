@@ -15,6 +15,7 @@ import {
   
 	  // Allow static HTML pages through — only guard /api/* routes
 	  if (!req.path.startsWith('/api')) return true;
+	  if (req.path.startsWith('/api/health')) return true;
   
 	  const provided = req.headers['x-app-password'];
 	  const expected = this.config.get<string>('APP_PASSWORD');
