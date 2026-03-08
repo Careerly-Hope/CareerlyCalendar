@@ -14,25 +14,30 @@ import { TeamMembersModule } from './module/team-members.module';
     // Load .env
     ConfigModule.forRoot({ isGlobal: true }),
 
-    // Serve plain HTML from /public folder at the root URL
-    ServeStaticModule.forRoot({
+     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/',
       exclude: ['/api/(.*)'],
     }),
 
-    // TypeORM → Neon (Postgres)
-    TypeOrmModule.forRootAsync({
+     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
-        url: config.get<string>('DATABASE_URL'),
-        ssl: { rejectUnauthorized: false },  
-        entities: [ContentIdea],
-        synchronize: true,  
-        logging: false,
-      }),
+	  useFactory: (config: ConfigService) => ({
+		type: 'postgres',
+		url: config.get<string>('DATABASE_URL'),
+		ssl: { rejectUnauthorized: false },
+		entities: [ContentIdea],
+		synchronize: config.get('NODE_ENV') !== 'production',
+		logging: false,
+ 		extra: {
+		  max: 1,               
+		  idleTimeoutMillis: 10000,
+		  connectionTimeoutMillis: 10000,
+		},
+	  }),
+
     }),
+
 
     ContentModule,
     TeamMembersModule,
