@@ -7,6 +7,7 @@ import { join } from 'path';
 import { ContentIdea } from './entities/content.entity';
 import { ContentModule } from './module/content.module';
 import { TeamMembersModule } from './module/team-members.module';
+import { HealthModule } from './health/health.module';
  
 
 @Module({
@@ -40,6 +41,7 @@ import { TeamMembersModule } from './module/team-members.module';
 
 
     ContentModule,
+	HealthModule,
     TeamMembersModule,
   ],
 })
